@@ -1,7 +1,8 @@
 package edu.smith.cs.csc212.adtr.real;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import edu.smith.cs.csc212.adtr.ListADT;
 import edu.smith.cs.csc212.adtr.SetADT;
@@ -16,7 +17,7 @@ public class JavaSet<T> implements SetADT<T> {
 	/**
 	 * The private Java set on the inside; does all the work.
 	 */
-	HashSet<T> inner = new HashSet<>();
+	Set<T> inner = new LinkedHashSet<>();
 
 	@Override
 	public int size() {

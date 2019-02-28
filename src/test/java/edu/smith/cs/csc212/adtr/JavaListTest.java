@@ -38,8 +38,8 @@ public class JavaListTest {
 	@Test
 	public void testEmpty() {
 		ListADT<String> data = makeEmptyList();
-		Assert.assertEquals(0, data.size());
-		Assert.assertEquals(true, data.isEmpty());
+		assertEquals(0, data.size());
+		assertEquals(true, data.isEmpty());
 	}
 	
 	@Test(expected=EmptyListError.class)
@@ -109,8 +109,65 @@ public class JavaListTest {
 		Assert.assertEquals("1", data.getIndex(0));
 	}
 	
-	// TODO: test list remove
-	// TODO test addIndex methods.
+	@Test
+	public void testremoveIndex() {
+		ListADT<String> data = makeFullList();
+		assertEquals(data.removeIndex(2),"c");
+		assertEquals(data.removeIndex(2),"d");
+	}
+	
+	@Test(expected=BadIndexError.class)
+	public void testremoveIndexLow() {
+		ListADT<String> data = makeFullList();
+		data.removeIndex(-5);
+	}
+	
+	@Test(expected=BadIndexError.class)
+	public void testremoveIndexHigh() {
+		ListADT<String> data = makeFullList();
+		data.removeIndex(data.size());
+	}
+	
+	@Test
+	public void testremoveBack() {
+		ListADT<String> data = makeFullList();
+		assertEquals(data.removeBack(),"d");
+		assertEquals(data.size(),3);
+		assertEquals(data.removeBack(),"c");
+		assertEquals(data.size(),2);
+	}
+	
+	@Test
+	public void testremoveFront() {
+		ListADT<String> data = makeFullList();
+		assertEquals(data.removeFront(),"a");
+		assertEquals(data.size(),3);
+		assertEquals(data.removeFront(),"b");
+		assertEquals(data.size(),2);
+	}
+	
+	@Test
+	public void testaddIndex() {
+		ListADT<String> data = makeEmptyList();
+		data.addIndex(0, "a");
+		Assert.assertEquals(1, data.size());
+		Assert.assertEquals("a", data.getIndex(0));
+		Assert.assertEquals(false, data.isEmpty());
+		data.addIndex(0, "b");
+		Assert.assertEquals(2, data.size());
+		Assert.assertEquals("b", data.getIndex(0));
+		Assert.assertEquals(false, data.isEmpty());
+		data.addIndex(1,"c");
+		Assert.assertEquals(3, data.size());
+		Assert.assertEquals("c", data.getIndex(1));
+		Assert.assertEquals(false, data.isEmpty());
+		data.addIndex(2, "d");
+		Assert.assertEquals(4, data.size());
+		Assert.assertEquals("d", data.getIndex(2));
+		Assert.assertEquals(false, data.isEmpty());
+		assertEquals(data.getFront(),"b");
+		assertEquals(data.getBack(),"a");
+	}
 	
 	@Test
 	public void testGetFront() {
@@ -172,10 +229,45 @@ public class JavaListTest {
 		data.addIndex(-1, "the");
 	}
 	
-	// TODO write some tests for setIndex.
+	@Test
+	public void testsetIndex() {
+		ListADT<String> data = makeFullList();
+		data.setIndex(0, "e");
+		Assert.assertEquals(4, data.size());
+		Assert.assertEquals("e", data.getIndex(0));
+		data.setIndex(1, "f");
+		Assert.assertEquals(4, data.size());
+		Assert.assertEquals("f", data.getIndex(1));
+		data.setIndex(2, "g");
+		Assert.assertEquals(4, data.size());
+		Assert.assertEquals("g", data.getIndex(2));
+		data.setIndex(3, "h");
+		Assert.assertEquals(4, data.size());
+		Assert.assertEquals("h", data.getIndex(3));
+		assertEquals(data.getFront(),"e");
+		assertEquals(data.getBack(),"h");
+	}
+	
+	@Test(expected=EmptyListError.class)
+	public void testsetIndexCrash() {
+		ListADT<String> data = makeEmptyList();
+		data.setIndex(3, "c");
+	}
+	
+	@Test(expected=BadIndexError.class)
+	public void testsetIndexHigh() {
+		ListADT<String> data = makeFullList();
+		data.setIndex(data.size()*2, "h");
+	}
+	
+	@Test(expected=BadIndexError.class)
+	public void testsetIndexLow() {
+		ListADT<String> data = makeFullList();
+		data.setIndex(-5, "-e");
+	}
 	
 	@Test
 	public void testToJava() {
-		assertEquals(makeFullList().toJava(), Arrays.asList("a", "b", "d", "d"));
+		assertEquals(makeFullList().toJava(), Arrays.asList("a", "b", "c", "d"));
 	}
 }
